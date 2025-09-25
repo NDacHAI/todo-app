@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    background-color: #f5f5f5;
+    /* optional */
+}
+
+.bg-dark {
+    color: white;
+    background-color: #0F0F0F;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #171717 inset;
+    /* bg dark */
+    -webkit-text-fill-color: white;
+    /* màu chữ */
+    transition: background-color 5000s ease-in-out 0s;
+    /* tránh nháy */
+}
+
+.dark input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #171717 inset;
+    -webkit-text-fill-color: white;
+}
+
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #171717 inset;
+    -webkit-text-fill-color: white;
+}
