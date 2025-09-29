@@ -10,7 +10,8 @@ export const fetchTodos = async () => {
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
 
-// Thêm 1 todo mới
+// Thêm 1 todo mớicó
+
 export const addTodo = async (todo: { title: string; completed: boolean }) => {
     const docRef = await addDoc(collection(db, "todos"), todo);
     return docRef.id;
