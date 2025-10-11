@@ -41,7 +41,7 @@ const Register = () => {
     }
 
     return (
-        <div className="w-full h-screen flex items-center justify-center dark:bg-neutral-900">
+        <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 dark:from-neutral-900 dark:to-neutral-900">
             <div className="max-w-sm w-full mx-auto bg-white dark:bg-neutral-800 dark:text-white rounded-lg shadow p-6">
                 <h2 className="text-2xl font-bold mb-4 text-center">Đăng kí</h2>
                 <div className="flex flex-col gap-4">
@@ -101,7 +101,7 @@ const Register = () => {
                         <span>Bạn đã có tài khoản</span>
                         <Link className="text-blue-600 underline text-md" to="/login"> Đăng nhập ngay</Link>
                     </div>
-                    <button className="bg-blue-600 text-white py-2 rounded hover:bg-blue-600 cursor-pointer"
+                    <button className="bg-blue-600 text-white py-2 rounded hover:bg-blue-800 cursor-pointer transition-all duration-300"
                         onClick={() => handleRegister()}
                     >
                         Đăng kí

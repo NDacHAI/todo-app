@@ -28,6 +28,9 @@
       ],
       "@context/*": [
         "context/*"
+      ],
+      "@myTypes/*": [
+        "types/*"
       ]
     }
   }

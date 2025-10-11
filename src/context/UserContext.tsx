@@ -1,44 +1,35 @@
-import { createContext, useState, useContext } from "react";
-import type { ReactNode } from "react";
-
-export interface User {
-    id: string;
-    name: string;
-}
-
-export interface UserContextType {
-    user: User | null;
-    setUser: (user: User | null) => void;
-}
+import { createContext, useState, useEffect, type ReactNode } from "react";
+import { onAuthStateChanged, type User as FirebaseUser } from "firebase/auth";
+import { auth } from "../firebase/config";
+import type { UserContextType, User } from "./userType";
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    // Load user từ localStorage khi app khởi động
-    const [user, setUserState] = useState<User | null>(() => {
-        const saved = localStorage.getItem("user");
-        return saved ? JSON.parse(saved) : null;
-    });
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    const setUser = (newUser: User | null) => {
-        setUserState(newUser);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
+            if (firebaseUser) {
+                setUser({
+                    id: firebaseUser.uid,
+                    name: firebaseUser.email,
+                });
+            } else {
+                setUser(null);
+            }
+            setLoading(false);
+        });
 
-        if (newUser) {
-            localStorage.setItem("user", JSON.stringify(newUser));
-        } else {
-            localStorage.removeItem("user");
-        }
-    };
+        return () => unsubscribe();
+    }, []);
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, loading }}>
             {children}
         </UserContext.Provider>
     );
 };
 
-export const useUser = (): UserContextType => {
-    const context = useContext(UserContext);
-    if (!context) throw new Error("useUser must be used within a UserProvider");
-    return context;
-};
+export default UserContext;
