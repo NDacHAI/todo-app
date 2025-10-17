@@ -79,3 +79,49 @@ input:-webkit-autofill:focus {
         transform: translateY(-6px);
     }
 }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fadeUp {
+    animation: fadeUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fadeDown {
+    animation: fadeDown 0.5s ease-out forwards;
+}

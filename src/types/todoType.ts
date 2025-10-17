@@ -1,7 +1,10 @@
+import type { Timestamp } from "firebase/firestore";
+
+
 export type DataTodo = {
-    id: number,
-    title: string,
-    timeCreate: string,
-    isChecked: boolean,
-    status: string
-}
+    id: string; // Firestore document ID
+    title: string;
+    completed: boolean;
+    dueDay: Timestamp;
+    createdAt: Timestamp;
+};

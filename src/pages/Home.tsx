@@ -1,7 +1,7 @@
 import { useUser } from "@context/useUser";
 import HomeNoLogin from "@pages/HomeNoLogin";
 import LoadingCheckUserOverLay from "@component/LoadingCheckUserOverLay";
-import TodoForm from "@component/TodoForm";
+import TodoList from "@component/TodoList";
 
 const Home = () => {
     const { user, loading } = useUser();
@@ -11,7 +11,7 @@ const Home = () => {
     }
 
     return user ? (
-        <div className="min-h-screen flex flex-col justify-center items-center  bg-gradient-to-br from-blue-100 to-blue-200 dark:from-neutral-900 dark:to-neutral-900 mt-[1px]">
+        <div className="min-h-screen flex flex-col justify-center items-center  bg-gradient-to-br from-blue-100 to-blue-200 dark:from-neutral-900 dark:to-neutral-900 mt-[1px] ">
             <div className="text-center">
                 <h1 className="text-4xl font-bold text-neutral-800 dark:text-white">
                     Xin chào, {user.name || "bạn"} 👋
@@ -21,7 +21,7 @@ const Home = () => {
                 </p>
             </div>
 
-            <TodoForm />
+            <TodoList />
         </div>
 
     ) : (

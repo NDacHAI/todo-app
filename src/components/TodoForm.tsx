@@ -1,60 +1,114 @@
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import TodoItem from "./TodoItem";
-import type { DataTodo } from "@myTypes/todoType"
+import type React from "react";
+import { useState, useEffect } from "react";
+import { addTodo, updateTodo } from "../firebase/db";
+import { toast } from "react-toastify";
+import type { DataTodo } from "@myTypes/todoType";
 
-const TodoForm = () => {
+type Props = {
+    onClose?: () => void;
+    onAdded?: () => void;
+    todoToEdit?: DataTodo; // Nếu có là sửa
+};
 
-    const [openOption, setOpenOption] = useState(false)
-    const [valueOption, setValueOption] = useState("ALL")
-    const options = ["ALL", "NEW"]
+const TodoForm: React.FC<Props> = ({ onClose, onAdded, todoToEdit }) => {
+    const [title, setTitle] = useState("");
+    const [dueDay, setDueDay] = useState("");
 
-    const todoList: DataTodo[] = [
-        { id: 1, title: "lam viec", timeCreate: "123r3", isChecked: true, status: "Success" },
-        { id: 2, title: "lam viec", timeCreate: "123r3", isChecked: false, status: "Overdue" },
-        { id: 3, title: "lam viec", timeCreate: "123r3", isChecked: false, status: "" },
-        { id: 4, title: "lam viec", timeCreate: "123r3", isChecked: false, status: "" },
-    ]
+    // Khi form mở với todoToEdit thì điền sẵn dữ liệu
+    useEffect(() => {
+        if (todoToEdit) {
+            setTitle(todoToEdit.title);
+            // Chuyển timestamp Firebase -> yyyy-mm-dd cho input type=date
+            setDueDay(todoToEdit.dueDay?.toDate
+                ? todoToEdit.dueDay.toDate().toISOString().slice(0, 10)
+                : "");
+        } else {
+            setTitle("");
+            setDueDay("");
+        }
+    }, [todoToEdit]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!title || !dueDay) return alert("Vui lòng nhập đầy đủ thông tin!");
+
+        try {
+            if (todoToEdit) {
+                // Sửa todo
+                await updateTodo(todoToEdit.id, { title, dueDay: new Date(dueDay) });
+                toast.success("Cập nhật công việc thành công!");
+            } else {
+                // Thêm todo mới
+                await addTodo({ title, completed: false, dueDay: new Date(dueDay) });
+                toast.success("Thêm công việc thành công!");
+            }
+            onAdded?.();
+            onClose?.();
+        } catch (error) {
+            console.error(error);
+            toast.error("Có lỗi xảy ra, thử lại!");
+        }
+    };
 
     return (
-        <div className="mt-12 text-center">
-            <h1 className="text-3xl text-white font-bold [text-shadow:_0_0_12px_rgba(59,130,246,0.9),_0_0_24px_rgba(59,130,246,0.6)]">TODO LIST </h1>
-            <div className="flex justify-between mt-6 relative">
-                <button className="py-1 px-4 bg-blue-600 rounded-lg text-white dark:border-none shadow-lg cursor-pointer hover:-translate-y-1 transition-all duration-300">Add Task</button>
-                <div className="flex items-center gap-3 py-1 px-4 w-24 dark:bg-blue-200 dark:text-neutral-800 bg-sky-100 text-neutral-900 font-bold rounded cursor-pointer relative shadow-lg"
-                    onClick={() => setOpenOption(!openOption)}
-                >
-                    <span>{valueOption}</span>
-                    <FontAwesomeIcon icon={faAngleDown} />
-                </div>
-                {openOption && (
-                    <ul className="absolute right-0 -bottom-18 z-50">
-                        {options.map(opt => (
-                            <li key={opt}
-                                onClick={() => {
-                                    setValueOption(opt)
-                                    setOpenOption(false)
-                                }}
-                                className="w-18 py-1 px-2 dark:bg-blue-200 dark:text-neutral-800 bg-sky-100 text-neutral-900 font-bold rounded cursor-pointer
-                                        left-0 -bottom-9 text-center mt-1 hover:text-blue-600 transition-all duration-300 shadow-lg
-                                    "
-                            >
-                                {opt}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
-            <div className="w-xl bg-sky-100 border border-blue-200 dark:bg-neutral-800 mt-4 rounded-lg shadow-lg p-4">
-                {
-                    todoList.map(item => (
-                        <TodoItem key={item.id} data={item} />
-                    ))
-                }
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center fadeUp">
+            <div className="w-[400px] bg-blue-100 relative text-neutral-900 rounded-lg p-5 shadow-lg select-none">
+                {/* Nút đóng */}
+                <FontAwesomeIcon
+                    icon={faX}
+                    onClick={onClose}
+                    className="absolute right-2 top-2 p-1 hover:bg-red-500 hover:text-white rounded-lg transition-all duration-300 cursor-pointer"
+                />
+
+                <h1 className="font-bold text-xl text-center mb-4">
+                    {todoToEdit ? "EDIT TODO" : "ADD TODO"}
+                </h1>
+
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <div className="flex flex-col">
+                        <label className="font-semibold">Tiêu đề:</label>
+                        <input
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            type="text"
+                            placeholder="Nhập tiêu đề công việc..."
+                            className="border border-blue-300 rounded-md px-2 py-1 outline-none focus:border-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label className="font-semibold">Ngày đến hạn:</label>
+                        <input
+                            value={dueDay}
+                            onChange={(e) => setDueDay(e.target.value)}
+                            type="date"
+                            className="border border-blue-300 rounded-md px-2 py-1 outline-none focus:border-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div className="flex justify-end gap-3 mt-2">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-4 py-1 bg-gray-300 rounded-md hover:bg-red-500/90 hover:text-white transition-all cursor-pointer"
+                        >
+                            Hủy
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all cursor-pointer"
+                        >
+                            {todoToEdit ? "Cập nhật" : "Lưu"}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     );
-}
+};
 
 export default TodoForm;

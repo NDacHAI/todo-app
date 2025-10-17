@@ -16,13 +16,13 @@ const Header = () => {
     };
 
     return (
-        <div className="max-w-full bg-gradient-to-br from-blue-100 to-blue-200 dark:from-neutral-900 dark:to-neutral-900 dark:text-white shadow-lg dark:shadow-white/20 z-10">
+        <div className="max-w-full bg-gradient-to-br from-blue-100 to-blue-200 dark:from-neutral-900 dark:to-neutral-900 dark:text-white shadow-lg dark:shadow-white/20 z-10 ">
             <div className="w-7xl mx-auto flex justify-between items-center h-18">
                 <Link to="/" className="font-bold text-2xl">Todo App</Link>
 
                 {/* Nếu đang loading, hiển thị placeholder nhỏ */}
                 {loading ? (
-                    <div className="h-6 w-32 bg-gray-300 dark:bg-neutral-700 rounded animate-pulse"></div>
+                    <div className="h-6 w-32 bg-sky-400 dark:bg-neutral-700 rounded animate-pulse"></div>
                 ) : user ? (
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2 bg-blue-600 font-bold text-white py-1 px-4 rounded-lg hover:scale-110 transition-all duration-300 cursor-pointer">

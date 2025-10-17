@@ -9,11 +9,11 @@ const HomeNoLogin = () => {
             <div className="mt-12 text-center">
                 <h1 className="text-3xl text-white font-bold [text-shadow:_0_0_12px_rgba(59,130,246,0.9),_0_0_24px_rgba(59,130,246,0.6)]">TODO LIST </h1>
                 <div className="flex justify-between mt-6 relative">
-                    <Link to="/login" className="py-1 px-4 bg-blue-600 rounded-lg text-white dark:border-none shadow-lg cursor-pointer hover:-translate-y-1 transition-all duration-300">Add Task</Link>
+                    <Link to="/login" className="py-1 px-4 bg-blue-600 rounded-lg text-white dark:border-none shadow-lg cursor-pointer transition-all duration-300 animate-bounce">Add Task</Link>
                     <Link to="/login" className="flex items-center gap-3 py-1 px-4 w-24 dark:bg-blue-200 dark:text-neutral-800 bg-sky-100 text-neutral-900 font-bold rounded cursor-pointer relative shadow-lg"
                     >
-                        <span>ALL</span>
-                        <FontAwesomeIcon icon={faAngleDown} />
+                        <span className="hover:animate-bounce">ALL</span>
+                        <FontAwesomeIcon icon={faAngleDown} className="animate-bounce" />
                     </Link>
 
                 </div>
