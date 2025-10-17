@@ -23,14 +23,14 @@ const Login = () => {
             await login(Email, password); // login() gọi Firebase signInWithEmailAndPassword
             toast.success("Đăng nhập thành công");
             navigate("/");
-        } catch (err) {
+        } catch {
             toast.error("Đăng nhập thất bại");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         handleLogin()
     }
