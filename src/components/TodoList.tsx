@@ -34,7 +34,7 @@ const TodoList = () => {
     }
 
     const handleEdit = (todo: DataTodo) => {
-        setEditingTodo(todo);
+        setEditingTodo(todo ?? undefined);
         setOpenTodoForm(true)
     };
 
@@ -92,7 +92,7 @@ const TodoList = () => {
                 )}
             </div>
 
-            {openTodoForm && <TodoForm onClose={handleCloseForm} onAdded={handleAdded} todoToEdit={editingTodo} />}
+            {openTodoForm && <TodoForm onClose={handleCloseForm} onAdded={handleAdded} todoToEdit={editingTodo ?? undefined} />}
             {loading && <SpinnerOverlay />}
         </div>
     );
